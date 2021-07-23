@@ -1,4 +1,4 @@
-package com.example.e_garden;
+package com.android.e_garden;
 
 import android.content.Context;
 
