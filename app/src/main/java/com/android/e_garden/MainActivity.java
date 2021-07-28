@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.e_garden.viewModels.Home;
 import com.android.e_garden.viewModels.ListViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void login(FirebaseUser user) {
         Globals.getInstance().setUser(user);
-        Intent intent = new Intent(this, ListViewModel.class);
+        Intent intent = new Intent(this, Home.class); //mandar ir pro home
         signInActivityResult.launch(intent);
     }
 }
