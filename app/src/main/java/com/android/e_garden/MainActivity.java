@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth mAuth;
     private ActivityResultLauncher<Intent> signInActivityResult;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +79,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         signInActivityResult.launch(signInIntent);
     }
 
+
+
+
+
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
@@ -90,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // TODO show error
         }
     }
+
+
 
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);

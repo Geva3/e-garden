@@ -10,8 +10,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Egarden">
-        <activity android:name=".viewModels.Home"></activity>
+        <activity android:name=".viewModels.Home" />
+        <activity android:name=".viewModels.AddPlant"
+            android:parentActivityName=".viewModels.Home"/>
+        <activity android:name=".viewModels.TesteListView"
+            android:parentActivityName=".viewModels.Home"/>
         <activity android:name=".MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
