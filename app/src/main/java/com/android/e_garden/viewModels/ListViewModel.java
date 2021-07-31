@@ -2,6 +2,7 @@ package com.android.e_garden.viewModels;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.android.e_garden.Globals;
 import com.android.e_garden.R;
@@ -28,7 +30,13 @@ public class ListViewModel extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        listView = findViewById(R.id.list);
+        Toolbar toolbar = findViewById(R.id.toolbar3); //Criando uma variável toolbar, que contém o id da toolbar do activity main
+        setSupportActionBar(toolbar); //habilita a toolbar
+        setTitle("Meu Jardim"); //Dá o título para a toolbar de Meu Jardim
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Habilita a tecla de return
+
+
+        listView = findViewById(R.id.lvPlant);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -81,14 +89,26 @@ public class ListViewModel extends AppCompatActivity {
     public void onBackPressed() {
         new AlertDialog.Builder(this)
             .setIcon(android.R.drawable.ic_dialog_alert)
-            .setTitle("Closing Activity")
-            .setMessage("Are you sure you want to quit E-Garden?")
-            .setPositiveButton("Yes", (dialog, which) -> {
+            .setTitle("Você está deixando seu Jardim")
+            .setMessage("Tem certeza que você quer sair?")
+            .setPositiveButton("Sim", (dialog, which) -> {
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
                 mAuth.signOut();
                 finish();
             })
-            .setNegativeButton("No", null)
+            .setNegativeButton("Não", null)
             .show();
     }
+
+    public boolean onCreateOptionsMenu(Menu menu) // Habilita o menu e mostra ele na toolbar
+    {
+        getMenuInflater().inflate(R.menu.searchmenu,menu);
+        return true;
+
+    }
+
+
+
+
+
 }
