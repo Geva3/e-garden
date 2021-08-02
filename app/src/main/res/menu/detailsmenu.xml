@@ -12,4 +12,10 @@
         android:icon="@android:drawable/ic_menu_delete"
         android:title="erase"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_regar"
+        android:title="regar"
+        app:showAsAction="always"
+
+        />
 </menu>
