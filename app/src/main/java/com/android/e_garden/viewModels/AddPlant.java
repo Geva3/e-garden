@@ -20,13 +20,13 @@ public class AddPlant extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_plant);
 
-        Toolbar toolbar = findViewById(R.id.toolbar3);
+        Toolbar toolbar = findViewById(R.id.toolbar_Add);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Nova Planta");
 
 
-        botao03 = (Button) findViewById(R.id.characterButton);
+        botao03 = (Button) findViewById(R.id.bSave);
 
         botao03.setOnClickListener(new View.OnClickListener() {
 

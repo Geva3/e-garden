@@ -6,8 +6,9 @@
     android:background="@color/white"
     android:layout_height="match_parent">
 
+
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_Add"
+        android:id="@+id/toolbar_Details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/teal_200"
@@ -17,9 +18,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/cardView_Details"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="16dp"
@@ -27,10 +27,10 @@
         app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_Add">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_Details">
 
         <ImageView
-            android:id="@+id/ivPlant"
+            android:id="@+id/ivPlant_Details"
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:background="#00796B"
@@ -45,7 +45,7 @@
         android:layout_marginTop="230dp"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar_Add">
+        app:layout_constraintTop_toTopOf="@+id/toolbar_Details">
 
         <ScrollView
             android:layout_width="400dp"
@@ -54,7 +54,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="1578dp"
+                android:layout_height="1300dp"
                 android:layout_marginLeft="-8dp"
                 android:layout_marginRight="40dp"
                 android:layout_marginBottom="10dp">
@@ -77,8 +77,8 @@
                     android:text="Nome"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/etName"
+                <TextView
+                    android:id="@+id/tvName_Details"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_below="@+id/tvName"
@@ -90,17 +90,19 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="20dp"
                     android:hint="Nome"
-                    android:inputType="text"
                     android:paddingLeft="20dp"
                     android:paddingTop="8dp"
                     android:paddingRight="20dp"
-                    android:paddingBottom="8dp" />
+                    android:paddingBottom="8dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
 
                 <TextView
                     android:id="@+id/tvCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/etName"
+                    android:layout_below="@+id/tvName_Details"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
@@ -112,8 +114,8 @@
                     android:text="Categoria"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/etCategory"
+                <TextView
+                    android:id="@+id/tvCategory_Details"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_below="@+id/tvCategory"
@@ -126,18 +128,20 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
                     android:hint="Categoria"
-                    android:inputType="text"
                     android:paddingLeft="16dp"
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
-                    android:paddingBottom="8dp" />
+                    android:paddingBottom="8dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
 
 
                 <TextView
                     android:id="@+id/tvperiodoRega"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/etCategory"
+                    android:layout_below="@+id/tvCategory_Details"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -150,8 +154,8 @@
                     android:text="Período de Rega"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/etperiodoRega"
+                <TextView
+                    android:id="@+id/tvperiodoRega_Details"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_below="@+id/tvperiodoRega"
@@ -164,17 +168,19 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
                     android:hint="Dias/Horários"
-                    android:inputType="datetime"
                     android:paddingLeft="16dp"
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
-                    android:paddingBottom="8dp" />
+                    android:paddingBottom="8dp"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
 
                 <TextView
                     android:id="@+id/tvdataPlantio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/etperiodoRega"
+                    android:layout_below="@+id/tvperiodoRega_Details"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -187,8 +193,8 @@
                     android:text="Data do Plantio"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/etdataPlantio"
+                <TextView
+                    android:id="@+id/tvdataPlantio_Details"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_below="@+id/tvdataPlantio"
@@ -201,17 +207,19 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
                     android:hint="dd/mm/aa"
-                    android:inputType="date"
                     android:paddingLeft="16dp"
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
-                    android:paddingBottom="8dp" />
+                    android:paddingBottom="8dp"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
 
                 <TextView
                     android:id="@+id/tvdataColheita"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/etdataPlantio"
+                    android:layout_below="@+id/tvdataPlantio_Details"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -224,8 +232,8 @@
                     android:text="Data da Colheita"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/etdataColheita"
+                <TextView
+                    android:id="@+id/tvdataColheita_Details"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_below="@+id/tvdataColheita"
@@ -238,17 +246,19 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
                     android:hint="dd/mm/aa"
-                    android:inputType="date"
                     android:paddingLeft="16dp"
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
-                    android:paddingBottom="8dp" />
+                    android:paddingBottom="8dp"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
 
                 <TextView
                     android:id="@+id/tvtipoPlantio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/etdataColheita"
+                    android:layout_below="@+id/tvdataColheita_Details"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -259,10 +269,11 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
                     android:text="Tipo do Plantio"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    />
 
-                <EditText
-                    android:id="@+id/ettipoPlantio"
+                <TextView
+                    android:id="@+id/tvtipoPlantio_Details"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_below="@+id/tvtipoPlantio"
@@ -275,17 +286,19 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
                     android:hint="Vaso/Canteiro/Quintal"
-                    android:inputType="text"
                     android:paddingLeft="16dp"
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
-                    android:paddingBottom="8dp" />
+                    android:paddingBottom="8dp"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
 
                 <TextView
                     android:id="@+id/tvorigemPlantio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/ettipoPlantio"
+                    android:layout_below="@+id/tvtipoPlantio_Details"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -298,8 +311,8 @@
                     android:text="Origem do Plantio"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/etorigemPlantio"
+                <TextView
+                    android:id="@+id/tvorigemPlantio_Details"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_below="@+id/tvorigemPlantio"
@@ -312,17 +325,19 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
                     android:hint="Semente/Muda (Fornecedor)"
-                    android:inputType="text"
                     android:paddingLeft="16dp"
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
-                    android:paddingBottom="8dp" />
+                    android:paddingBottom="8dp"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
 
                 <TextView
                     android:id="@+id/tvqtdeAgua"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/etorigemPlantio"
+                    android:layout_below="@+id/tvorigemPlantio_Details"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -335,8 +350,8 @@
                     android:text="Quantidade de Água (ml)"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/etqtdeAgua"
+                <TextView
+                    android:id="@+id/tvqtdeAgua_Details"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_below="@+id/tvqtdeAgua"
@@ -349,17 +364,19 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
                     android:hint="XXXX(ml)"
-                    android:inputType="number"
                     android:paddingLeft="16dp"
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
-                    android:paddingBottom="8dp" />
+                    android:paddingBottom="8dp"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
 
                 <TextView
                     android:id="@+id/tvAmbiente"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/etqtdeAgua"
+                    android:layout_below="@+id/tvqtdeAgua_Details"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -372,8 +389,8 @@
                     android:text="Ambiente"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/etAmbiente"
+                <TextView
+                    android:id="@+id/tvAmbiente_Details"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_below="@+id/tvAmbiente"
@@ -386,17 +403,19 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
                     android:hint="Interno/Semi-Externo/Externo"
-                    android:inputType="text"
                     android:paddingLeft="16dp"
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
-                    android:paddingBottom="8dp" />
+                    android:paddingBottom="8dp"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
 
                 <TextView
                     android:id="@+id/tvEstacao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/etAmbiente"
+                    android:layout_below="@+id/tvAmbiente_Details"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -409,8 +428,8 @@
                     android:text="Estação"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/etEstacao"
+                <TextView
+                    android:id="@+id/tvEstacao_Details"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_below="@+id/tvEstacao"
@@ -423,17 +442,19 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
                     android:hint="Verão/Outono/Inverno/Primavera"
-                    android:inputType="text"
                     android:paddingLeft="16dp"
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
-                    android:paddingBottom="8dp" />
+                    android:paddingBottom="8dp"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
 
                 <TextView
                     android:id="@+id/tvFertilizante"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/etEstacao"
+                    android:layout_below="@+id/tvEstacao_Details"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -446,8 +467,8 @@
                     android:text="Fertilizante"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/etFertilizante"
+                <TextView
+                    android:id="@+id/tvFertilizante_Details"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_below="@+id/tvFertilizante"
@@ -460,17 +481,19 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
                     android:hint="Fertilizante"
-                    android:inputType="text"
                     android:paddingLeft="16dp"
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
-                    android:paddingBottom="8dp" />
+                    android:paddingBottom="8dp"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
 
                 <TextView
                     android:id="@+id/tvObservacao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/etFertilizante"
+                    android:layout_below="@+id/tvFertilizante_Details"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -483,8 +506,8 @@
                     android:text="Observação"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/etObservacao"
+                <TextView
+                    android:id="@+id/tvObservacao_Details"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
                     android:layout_below="@+id/tvObservacao"
@@ -498,28 +521,16 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"
                     android:gravity="clip_vertical"
-                    android:inputType="textMultiLine"
                     android:lines="8"
                     android:maxLines="16"
                     android:minLines="8"
                     android:paddingLeft="16dp"
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
-                    android:paddingBottom="8dp" />
-
-                <Button
-                    android:id="@+id/bSave"
-                    android:layout_width="240dp"
-                    android:layout_height="56dp"
-                    android:layout_below="@+id/etObservacao"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/ic_btn"
-                    android:gravity="center"
-                    android:text="Salvar"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    app:backgroundTint="#00796B" />
+                    android:paddingBottom="8dp"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
 
             </RelativeLayout>
         </ScrollView>
