@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_Add"
+        android:id="@+id/toolbar_Edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/teal_200"
@@ -19,7 +19,7 @@
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/cardView_Edit"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="16dp"
@@ -27,10 +27,10 @@
         app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_Add">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_Edit">
 
         <ImageView
-            android:id="@+id/ivPlant"
+            android:id="@+id/ivPlant_Edit"
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:background="#00796B"
@@ -45,7 +45,7 @@
         android:layout_marginTop="230dp"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar_Add">
+        app:layout_constraintTop_toTopOf="@+id/toolbar_Edit">
 
         <ScrollView
             android:layout_width="400dp"
@@ -61,7 +61,7 @@
 
 
                 <TextView
-                    android:id="@+id/tvName"
+                    android:id="@+id/tvName_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
@@ -78,10 +78,10 @@
                     android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/etName"
+                    android:id="@+id/etName_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_below="@+id/tvName"
+                    android:layout_below="@+id/tvName_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -97,10 +97,10 @@
                     android:paddingBottom="8dp" />
 
                 <TextView
-                    android:id="@+id/tvCategory"
+                    android:id="@+id/tvCategory_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/etName"
+                    android:layout_below="@+id/etName_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
@@ -113,10 +113,10 @@
                     android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/etCategory"
+                    android:id="@+id/etCategory_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_below="@+id/tvCategory"
+                    android:layout_below="@+id/tvCategory_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
@@ -134,10 +134,10 @@
 
 
                 <TextView
-                    android:id="@+id/tvperiodoRega"
+                    android:id="@+id/tvperiodoRega_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/etCategory"
+                    android:layout_below="@+id/etCategory_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -151,10 +151,10 @@
                     android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/etperiodoRega"
+                    android:id="@+id/etperiodoRega_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_below="@+id/tvperiodoRega"
+                    android:layout_below="@+id/tvperiodoRega_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
@@ -171,10 +171,10 @@
                     android:paddingBottom="8dp" />
 
                 <TextView
-                    android:id="@+id/tvdataPlantio"
+                    android:id="@+id/tvdataPlantio_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/etperiodoRega"
+                    android:layout_below="@+id/etperiodoRega_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -188,10 +188,10 @@
                     android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/etdataPlantio"
+                    android:id="@+id/etdataPlantio_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_below="@+id/tvdataPlantio"
+                    android:layout_below="@+id/tvdataPlantio_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
@@ -208,10 +208,10 @@
                     android:paddingBottom="8dp" />
 
                 <TextView
-                    android:id="@+id/tvdataColheita"
+                    android:id="@+id/tvdataColheita_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/etdataPlantio"
+                    android:layout_below="@+id/etdataPlantio_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -225,10 +225,10 @@
                     android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/etdataColheita"
+                    android:id="@+id/etdataColheita_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_below="@+id/tvdataColheita"
+                    android:layout_below="@+id/tvdataColheita_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
@@ -245,10 +245,10 @@
                     android:paddingBottom="8dp" />
 
                 <TextView
-                    android:id="@+id/tvtipoPlantio"
+                    android:id="@+id/tvtipoPlantio_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/etdataColheita"
+                    android:layout_below="@+id/etdataColheita_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -262,10 +262,10 @@
                     android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/ettipoPlantio"
+                    android:id="@+id/ettipoPlantio_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_below="@+id/tvtipoPlantio"
+                    android:layout_below="@+id/tvtipoPlantio_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
@@ -282,10 +282,10 @@
                     android:paddingBottom="8dp" />
 
                 <TextView
-                    android:id="@+id/tvorigemPlantio"
+                    android:id="@+id/tvorigemPlantio_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/ettipoPlantio"
+                    android:layout_below="@+id/ettipoPlantio_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -299,10 +299,10 @@
                     android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/etorigemPlantio"
+                    android:id="@+id/etorigemPlantio_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_below="@+id/tvorigemPlantio"
+                    android:layout_below="@+id/tvorigemPlantio_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
@@ -319,10 +319,10 @@
                     android:paddingBottom="8dp" />
 
                 <TextView
-                    android:id="@+id/tvqtdeAgua"
+                    android:id="@+id/tvqtdeAgua_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/etorigemPlantio"
+                    android:layout_below="@+id/etorigemPlantio_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -336,10 +336,10 @@
                     android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/etqtdeAgua"
+                    android:id="@+id/etqtdeAgua_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_below="@+id/tvqtdeAgua"
+                    android:layout_below="@+id/tvqtdeAgua_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
@@ -356,10 +356,10 @@
                     android:paddingBottom="8dp" />
 
                 <TextView
-                    android:id="@+id/tvAmbiente"
+                    android:id="@+id/tvAmbiente_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/etqtdeAgua"
+                    android:layout_below="@+id/etqtdeAgua_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -373,10 +373,10 @@
                     android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/etAmbiente"
+                    android:id="@+id/etAmbiente_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_below="@+id/tvAmbiente"
+                    android:layout_below="@+id/tvAmbiente_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
@@ -393,10 +393,10 @@
                     android:paddingBottom="8dp" />
 
                 <TextView
-                    android:id="@+id/tvEstacao"
+                    android:id="@+id/tvEstacao_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/etAmbiente"
+                    android:layout_below="@+id/etAmbiente_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -410,10 +410,10 @@
                     android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/etEstacao"
+                    android:id="@+id/etEstacao_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_below="@+id/tvEstacao"
+                    android:layout_below="@+id/tvEstacao_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
@@ -430,10 +430,10 @@
                     android:paddingBottom="8dp" />
 
                 <TextView
-                    android:id="@+id/tvFertilizante"
+                    android:id="@+id/tvFertilizante_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/etEstacao"
+                    android:layout_below="@+id/etEstacao_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -447,10 +447,10 @@
                     android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/etFertilizante"
+                    android:id="@+id/etFertilizante_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_below="@+id/tvFertilizante"
+                    android:layout_below="@+id/tvFertilizante_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
@@ -467,10 +467,10 @@
                     android:paddingBottom="8dp" />
 
                 <TextView
-                    android:id="@+id/tvObservacao"
+                    android:id="@+id/tvObservacao_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/etFertilizante"
+                    android:layout_below="@+id/etFertilizante_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -484,10 +484,10 @@
                     android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/etObservacao"
+                    android:id="@+id/etObservacao_Edit"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
-                    android:layout_below="@+id/tvObservacao"
+                    android:layout_below="@+id/tvObservacao_Edit"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentEnd="true"
@@ -508,10 +508,10 @@
                     android:paddingBottom="8dp" />
 
                 <Button
-                    android:id="@+id/bSave"
+                    android:id="@+id/bSave_Edit"
                     android:layout_width="240dp"
                     android:layout_height="56dp"
-                    android:layout_below="@+id/etObservacao"
+                    android:layout_below="@+id/etObservacao_Edit"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="20dp"
                     android:background="@drawable/ic_btn"

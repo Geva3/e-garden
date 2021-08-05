@@ -30,7 +30,7 @@ public class ListViewModel extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        Toolbar toolbar = findViewById(R.id.toolbar3); //Criando uma variável toolbar, que contém o id da toolbar do activity main
+        Toolbar toolbar = findViewById(R.id.toolbar); //Criando uma variável toolbar, que contém o id da toolbar do activity main
         setSupportActionBar(toolbar); //habilita a toolbar
         setTitle("Meu Jardim"); //Dá o título para a toolbar de Meu Jardim
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Habilita a tecla de return
