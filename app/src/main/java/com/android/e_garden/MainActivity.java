@@ -10,8 +10,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.e_garden.viewModels.Home;
-import com.android.e_garden.viewModels.ListViewModel;
+import com.android.e_garden.viewModels.HomeViewModel;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -75,13 +76,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void signIn() {
         Intent signInIntent = client.getSignInIntent();
-
         signInActivityResult.launch(signInIntent);
     }
-
-
-
-
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
@@ -95,8 +91,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // TODO show error
         }
     }
-
-
 
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
@@ -116,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void login(FirebaseUser user) {
         Globals.getInstance().setUser(user);
-        Intent intent = new Intent(this, Home.class); //mandar ir pro home
-        signInActivityResult.launch(intent);
+        Intent intent = new Intent(this, HomeViewModel.class);
+        startActivity(intent);
     }
 }

@@ -39,15 +39,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Nome da Planta"
-            android:textColor="#000"
             android:textStyle="bold"
             android:textSize="20sp"
             android:id="@+id/tvplantName"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="10dp"
-
-            />
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -60,7 +58,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="10dp"
-            />
+            android:layout_marginStart="16dp" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,7 +70,7 @@
             android:layout_marginBottom="10dp"
             android:textSize="15sp"
             android:id="@+id/tvplantStatus"
-            />
+            android:layout_marginStart="16dp" />
         <!--so our layout is set-->
 
     </LinearLayout>

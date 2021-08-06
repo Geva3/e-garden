@@ -1,51 +1,71 @@
 package com.android.e_garden.models;
 
+import androidx.annotation.NonNull;
+
 import com.android.e_garden.models.plant_enums.PlantCategory;
-import com.android.e_garden.models.plant_enums.PlantOrigin;
 import com.android.e_garden.models.plant_enums.PlantPlace;
 import com.android.e_garden.models.plant_enums.PlantSeason;
 import com.android.e_garden.models.plant_enums.PlantType;
 import com.android.e_garden.models.plant_enums.PlantedOn;
+import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
-public class Plant {
+public class Plant implements Serializable {
 
     private String id;
     private String name;
     private PlantCategory category;
-    private PlantOrigin origin;
+    private String origin;
     private Date plantedDate;
     private PlantedOn plantedOn;
     private PlantPlace plantedPlace;
     private PlantType plantType;
-    private Double wateringPeriod;
+    private Long wateringPeriod;
     private Integer waterQuantity;
     private PlantSeason season;
-    private ArrayList<Harvest> harvests;
+    private ArrayList<Date> harvests;
     private ArrayList<PlantPhoto> photos;
-    private ArrayList<Watering> watering;
+    private ArrayList<Date> watering;
+    private String description;
+    private String fertilizer;
 
     private String user;
 
     public static Plant fromFirestore(QueryDocumentSnapshot document) {
+
+        ArrayList<Date> harvests = (ArrayList<Date>) document.get("harvests");
+        ArrayList<Date> watering = (ArrayList<Date>) document.get("watering");
+        ArrayList<Map<String, Object>> photosFirestore = (ArrayList<Map<String, Object>>) document.get("photos");
+        if (photosFirestore == null) {
+            photosFirestore = new ArrayList<>();
+        }
+        ArrayList<PlantPhoto> photos = new ArrayList<>();
+        for (Map<String, Object> item : photosFirestore) {
+            photos.add(PlantPhoto.fromFirestore(item));
+        }
+
         return new Plant(
                 document.getId(),
                 document.get("name", String.class),
                 PlantCategory.fromString(document.get("category", String.class)),
-                PlantOrigin.fromString(document.get("origin", String.class)),
-                document.get("planted_date", Date.class),
-                PlantedOn.fromString(document.get("planted_on", String.class)),
-                PlantPlace.fromString(document.get("planted_place", String.class)),
-                PlantType.fromString(document.get("plant_type", String.class)),
-                document.get("watering_period", Double.class),
-                document.get("watering_quantity", Integer.class),
-                PlantSeason.fromString(document.get("plant_season", String.class)),
-                null,
-                null,
-                null,
+                document.get("origin", String.class),
+                document.get("plantedDate", Date.class),
+                PlantedOn.fromString(document.get("plantedOn", String.class)),
+                PlantPlace.fromString(document.get("plantedPlace", String.class)),
+                PlantType.fromString(document.get("plantType", String.class)),
+                document.get("wateringPeriod", Long.class),
+                document.get("wateringQuantity", Integer.class),
+                PlantSeason.fromString(document.get("season", String.class)),
+                harvests == null ? new ArrayList<>() : harvests,
+                photos,
+                watering == null ? new ArrayList<>() : watering,
+                document.getString("description"),
+                document.getString("fertilizer"),
                 document.get("user", String.class)
         );
     }
@@ -54,17 +74,19 @@ public class Plant {
             String id,
             String name,
             PlantCategory category,
-            PlantOrigin origin,
+            String origin,
             Date plantedDate,
             PlantedOn plantedOn,
             PlantPlace plantedPlace,
             PlantType plantType,
-            Double wateringPeriod,
+            Long wateringPeriod,
             Integer waterQuantity,
             PlantSeason season,
-            ArrayList<Harvest> harvests,
-            ArrayList<PlantPhoto> photos,
-            ArrayList<Watering> watering,
+            @NonNull ArrayList<Date> harvests,
+            @NonNull ArrayList<PlantPhoto> photos,
+            @NonNull ArrayList<Date> watering,
+            String description,
+            String fertilizer,
             String user) {
         this.id = id;
         this.name = name;
@@ -80,7 +102,12 @@ public class Plant {
         this.harvests = harvests;
         this.photos = photos;
         this.watering = watering;
+        this.description = description;
+        this.fertilizer = fertilizer;
         this.user = user;
+    }
+
+    public Plant() {
     }
 
     public String getId() {
@@ -107,11 +134,11 @@ public class Plant {
         this.category = category;
     }
 
-    public PlantOrigin getOrigin() {
+    public String getOrigin() {
         return origin;
     }
 
-    public void setOrigin(PlantOrigin origin) {
+    public void setOrigin(String origin) {
         this.origin = origin;
     }
 
@@ -147,11 +174,11 @@ public class Plant {
         this.plantType = plantType;
     }
 
-    public double getWateringPeriod() {
+    public Long getWateringPeriod() {
         return wateringPeriod;
     }
 
-    public void setWateringPeriod(Double wateringPeriod) {
+    public void setWateringPeriod(Long wateringPeriod) {
         this.wateringPeriod = wateringPeriod;
     }
 
@@ -171,11 +198,11 @@ public class Plant {
         this.season = season;
     }
 
-    public ArrayList<Harvest> getHarvests() {
+    public ArrayList<Date> getHarvests() {
         return harvests;
     }
 
-    public void setHarvests(ArrayList<Harvest> harvests) {
+    public void setHarvests(ArrayList<Date> harvests) {
         this.harvests = harvests;
     }
 
@@ -187,11 +214,11 @@ public class Plant {
         this.photos = photos;
     }
 
-    public ArrayList<Watering> getWatering() {
+    public ArrayList<Date> getWatering() {
         return watering;
     }
 
-    public void setWatering(ArrayList<Watering> watering) {
+    public void setWatering(ArrayList<Date> watering) {
         this.watering = watering;
     }
 
@@ -201,5 +228,21 @@ public class Plant {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getFertilizer() {
+        return fertilizer;
+    }
+
+    public void setFertilizer(String fertilizer) {
+        this.fertilizer = fertilizer;
     }
 }

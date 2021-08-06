@@ -24,7 +24,9 @@ public class EditPlant extends AppCompatActivity {
         setContentView(R.layout.activity_edit_plant);
         Toolbar toolbar = findViewById(R.id.toolbar_Edit);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         setTitle("Editar Planta");
 
         TextView tvname = findViewById(R.id.etName_Edit);
@@ -35,17 +37,9 @@ public class EditPlant extends AppCompatActivity {
         tvrega.setText(rega);
         ImageView images = findViewById(R.id.ivPlant_Edit);
         images.setImageResource(image);
-
-
-
-
-
-
-
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) // Habilita o menu e mostra ele na toolbar
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.addmenu, menu);
         return true;
     }
