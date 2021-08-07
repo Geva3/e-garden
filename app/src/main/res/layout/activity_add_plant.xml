@@ -35,7 +35,7 @@
             android:adjustViewBounds="true"
             android:background="#00796B"
             android:contentDescription="Foto da Planta"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             android:src="@drawable/plant" />
     </androidx.cardview.widget.CardView>
 

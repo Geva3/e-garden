@@ -5,8 +5,8 @@
     <item
         android:id="@+id/action_newphoto"
         android:icon="@drawable/ic_action_camera"
-        android:title="NewPhoto"
-        app:showAsAction="always" />
+        android:title="Adicionar Foto"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_edit"
         android:icon="@android:drawable/ic_menu_edit"
@@ -17,11 +17,6 @@
         android:icon="@android:drawable/ic_menu_delete"
         android:title="Excluir Planta"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/action_water_history"
-        android:title="Histórico de Regas"
-        app:showAsAction="never"/>
-
     <item
         android:id="@+id/action_photos_history"
         android:title="Histórico de Fotos"

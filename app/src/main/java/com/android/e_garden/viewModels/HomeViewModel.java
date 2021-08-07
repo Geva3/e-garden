@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -44,7 +43,7 @@ public class HomeViewModel extends AppCompatActivity {
     }
 
     private void startAddPlantPage() {
-        startActivity(new Intent(this, AddPlantViewModel.class));
+        startActivity(new Intent(this, UpdatePlantViewModel.class));
     }
 
     private void logout() {
@@ -56,6 +55,7 @@ public class HomeViewModel extends AppCompatActivity {
                     FirebaseAuth mAuth = FirebaseAuth.getInstance();
                     mAuth.signOut();
                     Globals.getInstance().setUser(null);
+                    Globals.getInstance().clearPlantImages();
                     finish();
                 })
                 .setNegativeButton("Não", null)

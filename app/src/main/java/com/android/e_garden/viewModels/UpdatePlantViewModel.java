@@ -39,6 +39,7 @@ import com.android.e_garden.models.plant_enums.PlantType;
 import com.android.e_garden.models.plant_enums.PlantedOn;
 import com.android.e_garden.utils.DateInputMask;
 import com.android.e_garden.utils.ImageUtils;
+import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -52,13 +53,19 @@ import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class AddPlantViewModel extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class UpdatePlantViewModel extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private Uri photoPath;
     private ActivityResultLauncher<Intent> signInActivityResult;
     private EditText datePlant;
+    private EditText name;
+    private EditText origin;
+    private EditText wateringPeriod;
+    private EditText waterQuantity;
+    private EditText fertilizer;
+    private EditText description;
 
-    private final Plant plant = new Plant();
+    private Plant plant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +81,19 @@ public class AddPlantViewModel extends AppCompatActivity implements AdapterView.
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        setTitle("Nova Planta");
+
+        String plantId = getIntent().getStringExtra("plant");
+        if (plantId != null) {
+            setTitle("Editar Planta");
+            for (Plant plantItem : Globals.getInstance().getPlants()) {
+                if (plantItem.getId().equals(plantId)) {
+                    plant = plantItem;
+                }
+            }
+        } else {
+            setTitle("Nova Planta");
+            plant = new Plant();
+        }
 
         plant.setUser(Globals.getInstance().getUser().getUid());
 
@@ -88,10 +107,18 @@ public class AddPlantViewModel extends AppCompatActivity implements AdapterView.
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         image.setAdjustViewBounds(true);
+                        image.setScaleType(ImageView.ScaleType.CENTER_CROP);
                         image.setImageURI(photoPath);
                     }
                 }
         );
+
+        name = findViewById(R.id.etName);
+        origin = findViewById(R.id.etorigemPlantio);
+        wateringPeriod = findViewById(R.id.etperiodoRega);
+        waterQuantity = findViewById(R.id.etqtdeAgua);
+        fertilizer = findViewById(R.id.etFertilizante);
+        description = findViewById(R.id.etObservacao);
 
         datePlant = findViewById(R.id.etdataPlantio);
         new DateInputMask(datePlant);
@@ -126,6 +153,16 @@ public class AddPlantViewModel extends AppCompatActivity implements AdapterView.
         adEstacao.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spEstacao.setAdapter(adEstacao);
         spEstacao.setOnItemSelectedListener(this);
+
+        if (plantId != null) {
+            fillPageComponents();
+            Glide.with(this).load(Globals.getInstance().getPlantImage(plant.getPhotos().get(0).getPath())).into(image);
+            spCategory.setSelection(adCategory.getPosition(plant.getCategory()));
+            spLocalPlantio.setSelection(adLocalPlantio.getPosition(plant.getPlantedOn()));
+            spTipoPlantio.setSelection(adTipoPlantio.getPosition(plant.getPlantType()));
+            spAmbiente.setSelection(adAmbiente.getPosition(plant.getPlantedPlace()));
+            spEstacao.setSelection(adEstacao.getPosition(plant.getSeason()));
+        }
     }
 
     @Override
@@ -150,11 +187,28 @@ public class AddPlantViewModel extends AppCompatActivity implements AdapterView.
 
     }
 
+    private void fillPageComponents() {
+        name.setText(plant.getName());
+        origin.setText(plant.getOrigin());
+
+        if (plant.getPlantedDate() != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+            datePlant.setText(sdf.format(plant.getPlantedDate()));
+        }
+
+        wateringPeriod.setText(plant.getWateringPeriod() != null ? plant.getWateringPeriod().toString() : "");
+        waterQuantity.setText(plant.getWaterQuantity() != null ? plant.getWaterQuantity().toString() : "");
+
+        fertilizer.setText(plant.getFertilizer());
+        description.setText(plant.getDescription());
+    }
+
     private void save() {
 
+        boolean isNewPlant = plant.getId() == null;
         AtomicBoolean finished = new AtomicBoolean(false);
 
-        if (photoPath != null) {
+        if (photoPath != null && isNewPlant) {
             String photoPathStorage = plant.getUser() + "/" + UUID.randomUUID().toString();
             StorageReference ref = FirebaseStorage.getInstance().getReference().child(photoPathStorage);
             ref.putFile(photoPath)
@@ -182,8 +236,8 @@ public class AddPlantViewModel extends AppCompatActivity implements AdapterView.
             finished.set(true);
         }
 
-        plant.setName(((EditText) findViewById(R.id.etName)).getText().toString());
-        plant.setOrigin(((EditText) findViewById(R.id.etorigemPlantio)).getText().toString());
+        plant.setName(name.getText().toString());
+        plant.setOrigin(origin.getText().toString());
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         try {
@@ -191,7 +245,6 @@ public class AddPlantViewModel extends AppCompatActivity implements AdapterView.
         } catch (ParseException exception) {
             exception.printStackTrace();
         }
-        EditText wateringPeriod = findViewById(R.id.etperiodoRega);
         if (wateringPeriod.getText() != null) {
             try {
                 Long period = Long.parseLong(wateringPeriod.getText().toString());
@@ -200,23 +253,26 @@ public class AddPlantViewModel extends AppCompatActivity implements AdapterView.
                 exception.printStackTrace();
             }
         }
-        EditText wateringQuantity = findViewById(R.id.etqtdeAgua);
-        if (wateringQuantity.getText() != null) {
+        if (waterQuantity.getText() != null) {
             try {
-                Integer quantity = Integer.parseInt(wateringPeriod.getText().toString());
+                Integer quantity = Integer.parseInt(waterQuantity.getText().toString());
                 plant.setWaterQuantity(quantity);
             } catch (NumberFormatException exception) {
                 exception.printStackTrace();
             }
         }
-        plant.setFertilizer(((EditText) findViewById(R.id.etFertilizante)).getText().toString());
-        plant.setDescription(((EditText) findViewById(R.id.etObservacao)).getText().toString());
+        plant.setFertilizer(fertilizer.getText().toString());
+        plant.setDescription(description.getText().toString());
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("plant").add(plant);
+        if (isNewPlant) {
+            db.collection("plant").add(plant);
+        } else {
+            db.collection("plant").document(plant.getId()).set(plant);
+        }
 
         if (finished.get()) {
-            Toast.makeText(this, "Planta criada com sucesso", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Planta " + (isNewPlant ? "criada" : "atualizada") + " com sucesso", Toast.LENGTH_LONG).show();
             finish();
         } else {
             finished.set(true);
@@ -224,7 +280,9 @@ public class AddPlantViewModel extends AppCompatActivity implements AdapterView.
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.addmenu, menu);
+        if (plant.getId() == null) {
+            getMenuInflater().inflate(R.menu.addmenu, menu);
+        }
         return true;
     }
 
@@ -244,6 +302,9 @@ public class AddPlantViewModel extends AppCompatActivity implements AdapterView.
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
             }
             signInActivityResult.launch(intent);
+            return true;
+        } else if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
             return true;
         }
         return super.onOptionsItemSelected(item);

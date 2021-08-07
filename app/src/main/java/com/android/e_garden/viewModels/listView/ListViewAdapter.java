@@ -1,6 +1,7 @@
 package com.android.e_garden.viewModels.listView;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.android.e_garden.R;
 import com.android.e_garden.models.Plant;
 import com.android.e_garden.models.PlantPhoto;
 import com.bumptech.glide.Glide;
+import com.google.firebase.Timestamp;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -50,13 +52,17 @@ public class ListViewAdapter extends ArrayAdapter<Plant> {
         image.setImageResource(R.drawable.plant);
         image.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
         image.setAdjustViewBounds(true);
+        image.setScaleType(ImageView.ScaleType.CENTER_CROP);
         if (photos.size() > 0) {
-            if (Globals.getInstance().getPlantImage(photos.get(0).getPath()) != null) {
-                Glide.with(row).asBitmap().load(Globals.getInstance().getPlantImage(photos.get(0).getPath())).into(image);
-            } else {
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference reference = storage.getReference(photos.get(0).getPath());
-                reference.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(row).asBitmap().load(uri).into(image));
+            Uri plantUri = Globals.getInstance().getPlantImage(photos.get(0).getPath());
+            for (int i = 1; i < photos.size(); i++) {
+                if (plantUri != null) {
+                    break;
+                }
+                plantUri = Globals.getInstance().getPlantImage(photos.get(i).getPath());
+            }
+            if (plantUri != null) {
+                Glide.with(row).load(plantUri).into(image);
             }
         }
 
@@ -64,13 +70,13 @@ public class ListViewAdapter extends ArrayAdapter<Plant> {
         plantDescription.setText(plant.getCategory().toString());
 
         if (plant.getWateringPeriod() != null) {
-            ArrayList<Date> watering = plant.getWatering();
+            ArrayList<Timestamp> watering = plant.getWatering();
             Collections.sort(watering);
             if (watering.size() > 0) {
-                Date lastWatering = watering.get(watering.size() - 1);
+                Timestamp lastWatering = watering.get(watering.size() - 1);
 
-                long hoursInMilli = 60 * 60 * 1000;
-                long hours = (new Date().getTime() - (lastWatering.getTime() + plant.getWateringPeriod() * 3600000)) / hoursInMilli;
+                long hoursInSeconds = 60 * 60;
+                long hours = (Timestamp.now().getSeconds() - (lastWatering.getSeconds() + plant.getWateringPeriod() * 3600000)) / hoursInSeconds;
 
                 if (hours < 0) {
                     plantStatus.setText("Rega atrasada");

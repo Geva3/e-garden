@@ -33,7 +33,7 @@
             android:layout_height="match_parent"
             android:background="#00796B"
             android:contentDescription="Foto da Planta"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             app:srcCompat="@drawable/plant" />
     </androidx.cardview.widget.CardView>
 
@@ -84,7 +84,6 @@
                 android:paddingTop="8dp"
                 android:paddingRight="20dp"
                 android:paddingBottom="8dp"
-                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -122,7 +121,6 @@
                 android:paddingTop="8dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="8dp"
-                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_alignParentEnd="true" />
@@ -162,7 +160,45 @@
                 android:paddingTop="8dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="8dp"
-                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_alignParentEnd="true" />
+
+
+            <TextView
+                android:id="@+id/tvultimasRegas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvperiodoRega_Details"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Histórico de Regas"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvultimasRegas_Details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvultimasRegas"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="8dp"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_alignParentEnd="true" />
@@ -171,7 +207,7 @@
                 android:id="@+id/tvdataPlantio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvperiodoRega_Details"
+                android:layout_below="@+id/tvultimasRegas_Details"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -201,9 +237,9 @@
                 android:paddingTop="8dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="8dp"
-                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:maxLines="0"
                 android:layout_alignParentEnd="true" />
 
             <TextView
@@ -220,13 +256,13 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
-                android:text="Data da Colheita"
+                android:text="Histórico de Colheita"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tvdataColheita_Details"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/tvdataColheita"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
@@ -240,7 +276,44 @@
                 android:paddingTop="8dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="8dp"
-                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:id="@+id/tvlocalPlantio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvdataColheita_Details"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Local do Plantio"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvlocalPlantio_Details"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_below="@+id/tvlocalPlantio"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="8dp"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_alignParentEnd="true" />
@@ -249,7 +322,7 @@
                 android:id="@+id/tvtipoPlantio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvdataColheita_Details"
+                android:layout_below="@+id/tvlocalPlantio_Details"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -279,7 +352,6 @@
                 android:paddingTop="8dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="8dp"
-                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_alignParentEnd="true" />
@@ -318,7 +390,6 @@
                 android:paddingTop="8dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="8dp"
-                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_alignParentEnd="true" />
@@ -357,7 +428,6 @@
                 android:paddingTop="8dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="8dp"
-                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_alignParentEnd="true" />
@@ -396,7 +466,6 @@
                 android:paddingTop="8dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="8dp"
-                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_alignParentEnd="true" />
@@ -435,8 +504,7 @@
                 android:paddingTop="8dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="8dp"
-                android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_alignParentEnd="true" />
 
@@ -474,7 +542,6 @@
                 android:paddingTop="8dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="8dp"
-                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_alignParentEnd="true" />
@@ -519,30 +586,50 @@
                 android:paddingRight="16dp"
                 android:paddingBottom="8dp"
                 android:layout_marginBottom="30dp"
-                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
         </RelativeLayout>
     </ScrollView>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/llRegar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sv"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
-            android:id="@+id/bRegar"
-            android:layout_width="match_parent"
+            android:id="@+id/bColher"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:text="REGAR"/>
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="20dp"
+            android:text="COLHER"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/bRegar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="20dp" />
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/bRegar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="40dp"
+            android:text="REGAR"
+            app:layout_constraintLeft_toRightOf="@+id/bColher"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="40dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

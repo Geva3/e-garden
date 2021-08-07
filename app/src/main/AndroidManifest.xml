@@ -19,8 +19,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Egarden">
-        <activity android:name=".Photo_History"></activity>
-        <activity android:name=".Water_History" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -44,9 +42,8 @@
             android:name=".viewModels.HomeViewModel"
             android:launchMode="singleTask" />
         <activity
-            android:name=".viewModels.AddPlantViewModel"
-            android:launchMode="singleTask"
-            android:parentActivityName=".viewModels.HomeViewModel" />
+            android:name=".viewModels.UpdatePlantViewModel"
+            android:launchMode="singleTask" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -58,6 +55,10 @@
             android:name=".viewModels.listView.ListViewModel"
             android:launchMode="singleTask"
             android:parentActivityName=".viewModels.HomeViewModel" />
+        <activity
+            android:name=".viewModels.photoHistoryView.PhotoHistoryViewModel"
+            android:launchMode="singleTask"
+            android:parentActivityName=".viewModels.DetailsViewModel" />
     </application>
 
 </manifest>

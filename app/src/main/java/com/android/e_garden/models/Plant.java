@@ -7,11 +7,12 @@ import com.android.e_garden.models.plant_enums.PlantPlace;
 import com.android.e_garden.models.plant_enums.PlantSeason;
 import com.android.e_garden.models.plant_enums.PlantType;
 import com.android.e_garden.models.plant_enums.PlantedOn;
-import com.bumptech.glide.Glide;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
@@ -28,9 +29,9 @@ public class Plant implements Serializable {
     private Long wateringPeriod;
     private Integer waterQuantity;
     private PlantSeason season;
-    private ArrayList<Date> harvests;
+    private ArrayList<Timestamp> harvests;
     private ArrayList<PlantPhoto> photos;
-    private ArrayList<Date> watering;
+    private ArrayList<Timestamp> watering;
     private String description;
     private String fertilizer;
 
@@ -38,8 +39,15 @@ public class Plant implements Serializable {
 
     public static Plant fromFirestore(QueryDocumentSnapshot document) {
 
-        ArrayList<Date> harvests = (ArrayList<Date>) document.get("harvests");
-        ArrayList<Date> watering = (ArrayList<Date>) document.get("watering");
+        ArrayList<Timestamp> harvests = (ArrayList<Timestamp>) document.get("harvests");
+        ArrayList<Timestamp> watering = (ArrayList<Timestamp>) document.get("watering");
+
+        harvests = harvests == null ? new ArrayList<>() : harvests;
+        watering = watering == null ? new ArrayList<>() : watering;
+
+        Collections.sort(harvests);
+        Collections.sort(watering);
+
         ArrayList<Map<String, Object>> photosFirestore = (ArrayList<Map<String, Object>>) document.get("photos");
         if (photosFirestore == null) {
             photosFirestore = new ArrayList<>();
@@ -48,6 +56,7 @@ public class Plant implements Serializable {
         for (Map<String, Object> item : photosFirestore) {
             photos.add(PlantPhoto.fromFirestore(item));
         }
+        Collections.sort(photos, (plantPhoto, t1) -> t1.getDate().compareTo(plantPhoto.getDate()));
 
         return new Plant(
                 document.getId(),
@@ -61,9 +70,9 @@ public class Plant implements Serializable {
                 document.get("wateringPeriod", Long.class),
                 document.get("wateringQuantity", Integer.class),
                 PlantSeason.fromString(document.get("season", String.class)),
-                harvests == null ? new ArrayList<>() : harvests,
+                harvests,
                 photos,
-                watering == null ? new ArrayList<>() : watering,
+                watering,
                 document.getString("description"),
                 document.getString("fertilizer"),
                 document.get("user", String.class)
@@ -82,9 +91,9 @@ public class Plant implements Serializable {
             Long wateringPeriod,
             Integer waterQuantity,
             PlantSeason season,
-            @NonNull ArrayList<Date> harvests,
+            @NonNull ArrayList<Timestamp> harvests,
             @NonNull ArrayList<PlantPhoto> photos,
-            @NonNull ArrayList<Date> watering,
+            @NonNull ArrayList<Timestamp> watering,
             String description,
             String fertilizer,
             String user) {
@@ -198,11 +207,11 @@ public class Plant implements Serializable {
         this.season = season;
     }
 
-    public ArrayList<Date> getHarvests() {
+    public ArrayList<Timestamp> getHarvests() {
         return harvests;
     }
 
-    public void setHarvests(ArrayList<Date> harvests) {
+    public void setHarvests(ArrayList<Timestamp> harvests) {
         this.harvests = harvests;
     }
 
@@ -214,11 +223,11 @@ public class Plant implements Serializable {
         this.photos = photos;
     }
 
-    public ArrayList<Date> getWatering() {
+    public ArrayList<Timestamp> getWatering() {
         return watering;
     }
 
-    public void setWatering(ArrayList<Date> watering) {
+    public void setWatering(ArrayList<Timestamp> watering) {
         this.watering = watering;
     }
 

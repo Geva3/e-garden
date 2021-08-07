@@ -1,18 +1,32 @@
 package com.android.e_garden;
 
-import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
 
+import androidx.annotation.Nullable;
+
+import com.android.e_garden.models.Plant;
+import com.android.e_garden.models.PlantPhoto;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Globals {
+public class Globals implements EventListener<QuerySnapshot> {
 
     private static Globals instance;
 
     private FirebaseUser user;
-    private HashMap<String, Uri> plantImages = new HashMap<>();
+    private final HashMap<String, Uri> plantImages = new HashMap<>();
+    private final PlantList plants = new PlantList();
 
     public static Globals getInstance() {
         if (instance != null) {
@@ -28,6 +42,11 @@ public class Globals {
 
     public void setUser(FirebaseUser user) {
         this.user = user;
+        if (user != null) {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            Query currentPlantsCollection = db.collection("plant").whereEqualTo("user", user.getUid());
+            currentPlantsCollection.addSnapshotListener(this);
+        }
     }
 
     public void addPlantImage(String path, Uri image) {
@@ -40,5 +59,80 @@ public class Globals {
 
     public void clearPlantImages() {
         plantImages.clear();
+    }
+
+    public ArrayList<Plant> getPlants() {
+        return plants.getPlants();
+    }
+
+    public void setPlantObservable(PlantObservable observable) {
+        plants.setObservable(observable);
+    }
+
+    @Override
+    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+        if (error != null) {
+            Log.w("ANDROID_ERROR", "Error getting documents.", error);
+            return;
+        }
+
+        ArrayList<Plant> items = new ArrayList<>();
+        if (value == null) {
+            plants.setPlants(items);
+            plants.notifyListeners();
+            return;
+        }
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+        for (QueryDocumentSnapshot document : value) {
+            Plant plant = Plant.fromFirestore(document);
+            for (PlantPhoto photo : plant.getPhotos()) {
+                if (Globals.getInstance().getPlantImage(photo.getPath()) == null) {
+                    StorageReference reference = storage.getReference(photo.getPath());
+                    reference.getDownloadUrl()
+                            .addOnSuccessListener(uri -> {
+                                addPlantImage(photo.getPath(), uri);
+                                plants.notifyListeners();
+                    });
+                }
+            }
+            items.add(plant);
+        }
+
+        plants.setPlants(items);
+        plants.notifyListeners();
+    }
+
+    private static class PlantList {
+
+        private ArrayList<Plant> plants;
+        private PlantObservable observable;
+
+        public PlantList() {
+            plants = new ArrayList<>();
+        }
+
+        public void notifyListeners() {
+            if (observable != null) {
+                observable.onPlantUpdate();
+            }
+        }
+
+        public ArrayList<Plant> getPlants() {
+            return plants;
+        }
+
+        public void setPlants(ArrayList<Plant> plants) {
+            this.plants = plants;
+        }
+
+        public void setObservable(PlantObservable observable) {
+            this.observable = observable;
+        }
+    }
+
+    public interface PlantObservable {
+        void onPlantUpdate();
     }
 }

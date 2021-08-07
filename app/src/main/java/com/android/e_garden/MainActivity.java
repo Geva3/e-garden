@@ -19,8 +19,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -88,24 +90,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             firebaseAuthWithGoogle(account.getIdToken());
         } catch (ApiException e) {
             Log.w("ANDROID_ERROR", "signInResult:failed code=" + e.getStatusCode());
-            // TODO show error
         }
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(credential).addOnCompleteListener(this, task -> {
-                if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d("ANDROID_ERROR", "signInWithCredential:success");
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    login(user);
-                } else {
-                    Log.w("ANDROID_ERROR", "signInWithCredential:failure", task.getException());
-                    // TODO show error
-                }
-            }
-        );
+        mAuth.signInWithCredential(credential).addOnSuccessListener(authResult -> login(mAuth.getCurrentUser()));
     }
 
     private void login(FirebaseUser user) {
