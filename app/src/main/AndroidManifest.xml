@@ -2,10 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.e_garden">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-feature android:name="android.hardware.camera"
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="false" />
 
     <application
@@ -15,6 +19,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Egarden">
+        <activity android:name=".Photo_History"></activity>
+        <activity android:name=".Water_History" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -23,28 +29,35 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".viewModels.DetailsViewModel"
-            android:parentActivityName=".viewModels.listView.ListViewModel"
-            android:launchMode="singleTask"/>
-        <activity android:name=".viewModels.EditPlant"
-            android:parentActivityName=".viewModels.DetailsViewModel"
-            android:launchMode="singleTask"/>
-        <activity android:name=".viewModels.HomeViewModel"
-            android:launchMode="singleTask"/>
-        <activity android:name=".viewModels.AddPlantViewModel"
-            android:parentActivityName=".viewModels.HomeViewModel"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".viewModels.DetailsViewModel"
+            android:launchMode="singleTask"
+            android:parentActivityName=".viewModels.listView.ListViewModel" />
+        <activity
+            android:name=".viewModels.EditPlant"
+            android:launchMode="singleTask"
+            android:parentActivityName=".viewModels.DetailsViewModel" />
+        <activity
+            android:name=".viewModels.HomeViewModel"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".viewModels.AddPlantViewModel"
+            android:launchMode="singleTask"
+            android:parentActivityName=".viewModels.HomeViewModel" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".viewModels.listView.ListViewModel"
-            android:parentActivityName=".viewModels.HomeViewModel"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".viewModels.listView.ListViewModel"
+            android:launchMode="singleTask"
+            android:parentActivityName=".viewModels.HomeViewModel" />
     </application>
+
 </manifest>

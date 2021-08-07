@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@+id/cardView_Details"
-        app:layout_constraintBottom_toTopOf="@+id/sdfsdf"
+        app:layout_constraintBottom_toTopOf="@+id/llRegar"
         android:layout_marginTop="30dp"
         android:id="@+id/sv">
 
@@ -527,7 +527,7 @@
     </ScrollView>
 
     <LinearLayout
-        android:id="@+id/sdfsdf"
+        android:id="@+id/llRegar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -536,14 +536,13 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"/>
+            android:id="@+id/bRegar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:text="REGAR"/>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
