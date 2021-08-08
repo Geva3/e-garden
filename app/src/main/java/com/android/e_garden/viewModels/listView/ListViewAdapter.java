@@ -1,6 +1,7 @@
 package com.android.e_garden.viewModels.listView;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,7 +69,8 @@ public class ListViewAdapter extends ArrayAdapter<Plant> {
         if (remainingHours == null) {
             plantStatus.setText("Não foi definido um período de rega para esta planta");
         } else if (remainingHours < 0) {
-            plantStatus.setText("Rega atrasada em " + ((remainingHours < -24) ? (-1 * remainingHours / 24) + " dias" : remainingHours + " horas"));
+            plantStatus.setTextColor(Color.RED);
+            plantStatus.setText("Rega atrasada em " + ((remainingHours < -24) ? (-1 * remainingHours / 24) + " dias" : (-1 * remainingHours) + " horas"));
         } else if (remainingHours == 0) {
             plantStatus.setText("Regar agora");
         } else {

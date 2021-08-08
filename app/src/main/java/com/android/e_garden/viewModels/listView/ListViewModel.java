@@ -28,6 +28,8 @@ public class ListViewModel extends AppCompatActivity implements Globals.PlantObs
     private String plantName;
     private ArrayList<Plant> allPlants;
 
+    private boolean nameAsc = true;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +55,7 @@ public class ListViewModel extends AppCompatActivity implements Globals.PlantObs
         });
 
         allPlants = Globals.getInstance().getPlants();
+        sortByWatering();
         Globals.getInstance().addPlantObservable(this);
         adapter.addAll(allPlants);
     }
@@ -111,35 +114,54 @@ public class ListViewModel extends AppCompatActivity implements Globals.PlantObs
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_sort) {
-            Collections.sort(allPlants, (plant, t1) -> {
-                if (plant.getName() == null && t1.getName() == null) {
-                    return 0;
-                } else if (plant.getName() == null) {
-                    return -1;
-                } else if (t1.getName() == null) {
-                    return 1;
-                }
-                return plant.getName().toLowerCase().compareTo(t1.getName().toLowerCase());
-            });
+            if (nameAsc) {
+                nameAsc = false;
+                Collections.sort(allPlants, (plant, t1) -> {
+                    if (plant.getName() == null && t1.getName() == null) {
+                        return 0;
+                    } else if (plant.getName() == null) {
+                        return 1;
+                    } else if (t1.getName() == null) {
+                        return -1;
+                    }
+                    return t1.getName().toLowerCase().compareTo(plant.getName().toLowerCase());
+                });
+            } else {
+                nameAsc = true;
+                Collections.sort(allPlants, (plant, t1) -> {
+                    if (plant.getName() == null && t1.getName() == null) {
+                        return 0;
+                    } else if (plant.getName() == null) {
+                        return -1;
+                    } else if (t1.getName() == null) {
+                        return 1;
+                    }
+                    return plant.getName().toLowerCase().compareTo(t1.getName().toLowerCase());
+                });
+            }
             filterPlants();
             return true;
         } else if (item.getItemId() == R.id.action_sort_watering) {
-            Collections.sort(allPlants, (plant, t1) -> {
-                Long plantHours = plant.calculateRemainingHours();
-                Long t1Hours = t1.calculateRemainingHours();
-                if (plantHours == null && t1Hours == null) {
-                    return 0;
-                } else if (plantHours == null) {
-                    return 1;
-                } else if (t1Hours == null) {
-                    return -1;
-                }
-                return plantHours.compareTo(t1Hours);
-            });
+            sortByWatering();
             filterPlants();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void sortByWatering() {
+        Collections.sort(allPlants, (plant, t1) -> {
+            Long plantHours = plant.calculateRemainingHours();
+            Long t1Hours = t1.calculateRemainingHours();
+            if (plantHours == null && t1Hours == null) {
+                return 0;
+            } else if (plantHours == null) {
+                return 1;
+            } else if (t1Hours == null) {
+                return -1;
+            }
+            return plantHours.compareTo(t1Hours);
+        });
     }
 
     @Override
