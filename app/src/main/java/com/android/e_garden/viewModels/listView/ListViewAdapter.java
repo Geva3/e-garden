@@ -18,13 +18,8 @@ import com.android.e_garden.R;
 import com.android.e_garden.models.Plant;
 import com.android.e_garden.models.PlantPhoto;
 import com.bumptech.glide.Glide;
-import com.google.firebase.Timestamp;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 
 public class ListViewAdapter extends ArrayAdapter<Plant> {
     Context context;
@@ -40,7 +35,7 @@ public class ListViewAdapter extends ArrayAdapter<Plant> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View row = layoutInflater.inflate(R.layout.item_list, parent, false); // TODO remove this warning
+        View row = layoutInflater.inflate(R.layout.item_list, parent, false);
         ImageView image = row.findViewById(R.id.ivPlant);
         TextView plantTitle = row.findViewById(R.id.tvplantName);
         TextView plantDescription = row.findViewById(R.id.tvplantCategory);
@@ -69,27 +64,15 @@ public class ListViewAdapter extends ArrayAdapter<Plant> {
         plantTitle.setText(plant.getName());
         plantDescription.setText(plant.getCategory().toString());
 
-        if (plant.getWateringPeriod() != null) {
-            ArrayList<Timestamp> watering = plant.getWatering();
-            Collections.sort(watering);
-            if (watering.size() > 0) {
-                Timestamp lastWatering = watering.get(watering.size() - 1);
-
-                long hoursInSeconds = 60 * 60;
-                long hours = (Timestamp.now().getSeconds() - (lastWatering.getSeconds() + plant.getWateringPeriod() * 3600000)) / hoursInSeconds;
-
-                if (hours < 0) {
-                    plantStatus.setText("Rega atrasada");
-                } else if (hours == 0) {
-                    plantStatus.setText("Regar agora");
-                } else {
-                    plantStatus.setText("Regar em " + ((hours > 24) ? hours % 24 + " dias" : hours + " horas"));
-                }
-            } else {
-                plantStatus.setText("Regar agora");
-            }
-        } else {
+        Long remainingHours = plant.calculateRemainingHours();
+        if (remainingHours == null) {
             plantStatus.setText("Não foi definido um período de rega para esta planta");
+        } else if (remainingHours < 0) {
+            plantStatus.setText("Rega atrasada em " + ((remainingHours < -24) ? (-1 * remainingHours / 24) + " dias" : remainingHours + " horas"));
+        } else if (remainingHours == 0) {
+            plantStatus.setText("Regar agora");
+        } else {
+            plantStatus.setText("Regar em " + ((remainingHours > 24) ? remainingHours / 24 + " dias" : remainingHours + " horas"));
         }
 
         return row;

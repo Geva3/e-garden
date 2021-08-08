@@ -7,8 +7,7 @@
         android:icon="@android:drawable/ic_menu_search"
         android:title="Pesquisar"
         app:actionViewClass="android.widget.SearchView"
-        app:showAsAction="always"
-        />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_sort"
@@ -17,15 +16,8 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_settings"
-        android:title="Ordenar por"
+        android:id="@+id/action_sort_watering"
+        android:title="Ordenar por tempo até nova rega"
         app:showAsAction="never" >
-        <menu >
-            <item android:title="Não Regada"
-                android:id="@+id/action_sort_category"
-                app:showAsAction="never"/>
-            <item android:title="Regada" />
-            <item android:title="Categoria" />
-        </menu>
     </item>
 </menu>

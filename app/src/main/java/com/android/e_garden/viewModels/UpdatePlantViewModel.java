@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +40,7 @@ import com.android.e_garden.models.plant_enums.PlantType;
 import com.android.e_garden.models.plant_enums.PlantedOn;
 import com.android.e_garden.utils.DateInputMask;
 import com.android.e_garden.utils.ImageUtils;
+import com.android.e_garden.utils.MultiSpinner;
 import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -48,6 +50,7 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
@@ -60,12 +63,16 @@ public class UpdatePlantViewModel extends AppCompatActivity implements AdapterVi
     private EditText datePlant;
     private EditText name;
     private EditText origin;
-    private EditText wateringPeriod;
     private EditText waterQuantity;
     private EditText fertilizer;
     private EditText description;
+    private MultiSpinner wateringPeriodDaysOfWeek;
+    private MultiSpinner wateringPeriodHoursOfDay;
 
     private Plant plant;
+
+    private ArrayList<String> daysOfWeek;
+    private ArrayList<String> hoursOfDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,13 +122,46 @@ public class UpdatePlantViewModel extends AppCompatActivity implements AdapterVi
 
         name = findViewById(R.id.etName);
         origin = findViewById(R.id.etorigemPlantio);
-        wateringPeriod = findViewById(R.id.etperiodoRega);
         waterQuantity = findViewById(R.id.etqtdeAgua);
         fertilizer = findViewById(R.id.etFertilizante);
         description = findViewById(R.id.etObservacao);
 
         datePlant = findViewById(R.id.etdataPlantio);
         new DateInputMask(datePlant);
+
+        daysOfWeek = new ArrayList<>();
+        daysOfWeek.add("Domingo");
+        daysOfWeek.add("Segunda");
+        daysOfWeek.add("Terça");
+        daysOfWeek.add("Quarta");
+        daysOfWeek.add("Quinta");
+        daysOfWeek.add("Sexta");
+        daysOfWeek.add("Sábado");
+        wateringPeriodDaysOfWeek = findViewById(R.id.etperiodoRega);
+        wateringPeriodDaysOfWeek.setItems(daysOfWeek, "Todos os dias", "Nenhum dia", selected -> {
+            ArrayList<Long> daysOfWeekPeriod = new ArrayList<>();
+            for (long i = 0L; i < selected.length; i++) {
+                if (selected[(int) i]) {
+                    daysOfWeekPeriod.add(i + 1);
+                }
+            }
+            plant.setWateringPeriodDaysOfWeek(daysOfWeekPeriod);
+        });
+
+        hoursOfDay = new ArrayList<>();
+        for (int i = 6; i < 23; i++) {
+            hoursOfDay.add(String.valueOf(i));
+        }
+        wateringPeriodHoursOfDay = findViewById(R.id.etperiodoRegaHoras);
+        wateringPeriodHoursOfDay.setItems(hoursOfDay, "Todos os horários", "Nenhum horário", selected -> {
+            ArrayList<Long> daysOfWeekPeriod = new ArrayList<>();
+            for (long i = 0L; i < selected.length; i++) {
+                if (selected[(int) i]) {
+                    daysOfWeekPeriod.add(i + 6);
+                }
+            }
+            plant.setWateringPeriodHoursOfDay(daysOfWeekPeriod);
+        });
 
         //TODO create method to implement this (cleaner code)
         Spinner spCategory = findViewById(R.id.spCategory);
@@ -156,12 +196,26 @@ public class UpdatePlantViewModel extends AppCompatActivity implements AdapterVi
 
         if (plantId != null) {
             fillPageComponents();
-            Glide.with(this).load(Globals.getInstance().getPlantImage(plant.getPhotos().get(0).getPath())).into(image);
+            if (plant.getPhotos().size() > 0) {
+                Glide.with(this).load(Globals.getInstance().getPlantImage(plant.getPhotos().get(0).getPath())).into(image);
+            }
             spCategory.setSelection(adCategory.getPosition(plant.getCategory()));
             spLocalPlantio.setSelection(adLocalPlantio.getPosition(plant.getPlantedOn()));
             spTipoPlantio.setSelection(adTipoPlantio.getPosition(plant.getPlantType()));
             spAmbiente.setSelection(adAmbiente.getPosition(plant.getPlantedPlace()));
             spEstacao.setSelection(adEstacao.getPosition(plant.getSeason()));
+        } else {
+            ArrayList<Long> allWeekdays = new ArrayList<>();
+            for (long i = 1; i < 8; i++) {
+                allWeekdays.add(i);
+            }
+            plant.setWateringPeriodDaysOfWeek(allWeekdays);
+
+            ArrayList<Long> allHoursOfDay = new ArrayList<>();
+            for (long i = 6; i < 23; i++) {
+                allHoursOfDay.add(i);
+            }
+            plant.setWateringPeriodHoursOfDay(allHoursOfDay);
         }
     }
 
@@ -196,7 +250,34 @@ public class UpdatePlantViewModel extends AppCompatActivity implements AdapterVi
             datePlant.setText(sdf.format(plant.getPlantedDate()));
         }
 
-        wateringPeriod.setText(plant.getWateringPeriod() != null ? plant.getWateringPeriod().toString() : "");
+        if (plant.getWateringPeriodDaysOfWeek().size() > 0) {
+            ArrayList<Long> wateringDaysOfWeek = plant.getWateringPeriodDaysOfWeek();
+            boolean[] checked = new boolean[daysOfWeek.size()];
+            for (int i = 0; i < daysOfWeek.size(); i++) {
+                checked[i] = false;
+                for (Long integer : wateringDaysOfWeek) {
+                    if (integer.intValue() == (i + 1)) {
+                        checked[i] = true;
+                        break;
+                    }
+                }
+            }
+            wateringPeriodDaysOfWeek.setChecked(checked);
+        }
+        if (plant.getWateringPeriodHoursOfDay().size() > 0) {
+            ArrayList<Long> wateringHoursOfDay = plant.getWateringPeriodHoursOfDay();
+            boolean[] checked = new boolean[hoursOfDay.size()];
+            for (int i = 0; i < hoursOfDay.size(); i++) {
+                checked[i] = false;
+                for (Long integer : wateringHoursOfDay) {
+                    if (integer.intValue() == (i + 6)) {
+                        checked[i] = true;
+                        break;
+                    }
+                }
+            }
+            wateringPeriodHoursOfDay.setChecked(checked);
+        }
         waterQuantity.setText(plant.getWaterQuantity() != null ? plant.getWaterQuantity().toString() : "");
 
         fertilizer.setText(plant.getFertilizer());
@@ -243,15 +324,10 @@ public class UpdatePlantViewModel extends AppCompatActivity implements AdapterVi
         try {
             plant.setPlantedDate(sdf.parse(datePlant.getText().toString()));
         } catch (ParseException exception) {
-            exception.printStackTrace();
-        }
-        if (wateringPeriod.getText() != null) {
-            try {
-                Long period = Long.parseLong(wateringPeriod.getText().toString());
-                plant.setWateringPeriod(period);
-            } catch (NumberFormatException exception) {
-                exception.printStackTrace();
+            if (plant.getPlantedDate() == null) {
+                plant.setPlantedDate(new Date());
             }
+            exception.printStackTrace();
         }
         if (waterQuantity.getText() != null) {
             try {

@@ -35,10 +35,6 @@
             android:launchMode="singleTask"
             android:parentActivityName=".viewModels.listView.ListViewModel" />
         <activity
-            android:name=".viewModels.EditPlant"
-            android:launchMode="singleTask"
-            android:parentActivityName=".viewModels.DetailsViewModel" />
-        <activity
             android:name=".viewModels.HomeViewModel"
             android:launchMode="singleTask" />
         <activity

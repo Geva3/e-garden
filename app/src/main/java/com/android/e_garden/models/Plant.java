@@ -12,6 +12,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
@@ -26,7 +27,8 @@ public class Plant implements Serializable {
     private PlantedOn plantedOn;
     private PlantPlace plantedPlace;
     private PlantType plantType;
-    private Long wateringPeriod;
+    private ArrayList<Long> wateringPeriodDaysOfWeek;
+    private ArrayList<Long> wateringPeriodHoursOfDay;
     private Integer waterQuantity;
     private PlantSeason season;
     private ArrayList<Timestamp> harvests;
@@ -48,6 +50,9 @@ public class Plant implements Serializable {
         Collections.sort(harvests);
         Collections.sort(watering);
 
+        ArrayList<Long> wateringPeriodDaysOfWeek = (ArrayList<Long>) document.get("wateringPeriodDaysOfWeek");
+        ArrayList<Long> wateringPeriodHoursOfDay = (ArrayList<Long>) document.get("wateringPeriodHoursOfDay");
+
         ArrayList<Map<String, Object>> photosFirestore = (ArrayList<Map<String, Object>>) document.get("photos");
         if (photosFirestore == null) {
             photosFirestore = new ArrayList<>();
@@ -67,7 +72,8 @@ public class Plant implements Serializable {
                 PlantedOn.fromString(document.get("plantedOn", String.class)),
                 PlantPlace.fromString(document.get("plantedPlace", String.class)),
                 PlantType.fromString(document.get("plantType", String.class)),
-                document.get("wateringPeriod", Long.class),
+                wateringPeriodDaysOfWeek == null ? new ArrayList<>() : wateringPeriodDaysOfWeek,
+                wateringPeriodHoursOfDay == null ? new ArrayList<>() : wateringPeriodHoursOfDay,
                 document.get("wateringQuantity", Integer.class),
                 PlantSeason.fromString(document.get("season", String.class)),
                 harvests,
@@ -88,7 +94,8 @@ public class Plant implements Serializable {
             PlantedOn plantedOn,
             PlantPlace plantedPlace,
             PlantType plantType,
-            Long wateringPeriod,
+            @NonNull ArrayList<Long> wateringPeriodDaysOfWeek,
+            @NonNull ArrayList<Long> wateringPeriodHoursOfDay,
             Integer waterQuantity,
             PlantSeason season,
             @NonNull ArrayList<Timestamp> harvests,
@@ -105,7 +112,8 @@ public class Plant implements Serializable {
         this.plantedOn = plantedOn;
         this.plantedPlace = plantedPlace;
         this.plantType = plantType;
-        this.wateringPeriod = wateringPeriod;
+        this.wateringPeriodDaysOfWeek = wateringPeriodDaysOfWeek;
+        this.wateringPeriodHoursOfDay = wateringPeriodHoursOfDay;
         this.waterQuantity = waterQuantity;
         this.season = season;
         this.harvests = harvests;
@@ -183,12 +191,20 @@ public class Plant implements Serializable {
         this.plantType = plantType;
     }
 
-    public Long getWateringPeriod() {
-        return wateringPeriod;
+    public ArrayList<Long> getWateringPeriodDaysOfWeek() {
+        return wateringPeriodDaysOfWeek;
     }
 
-    public void setWateringPeriod(Long wateringPeriod) {
-        this.wateringPeriod = wateringPeriod;
+    public void setWateringPeriodDaysOfWeek(ArrayList<Long> wateringPeriodDaysOfWeek) {
+        this.wateringPeriodDaysOfWeek = wateringPeriodDaysOfWeek;
+    }
+
+    public ArrayList<Long> getWateringPeriodHoursOfDay() {
+        return wateringPeriodHoursOfDay;
+    }
+
+    public void setWateringPeriodHoursOfDay(ArrayList<Long> wateringPeriodHoursOfDay) {
+        this.wateringPeriodHoursOfDay = wateringPeriodHoursOfDay;
     }
 
     public Integer getWaterQuantity() {
@@ -253,5 +269,57 @@ public class Plant implements Serializable {
 
     public void setFertilizer(String fertilizer) {
         this.fertilizer = fertilizer;
+    }
+
+    public Long calculateRemainingHours() {
+        if (wateringPeriodDaysOfWeek.size() > 0 && wateringPeriodHoursOfDay.size() > 0) {
+            ArrayList<Timestamp> watering = getWatering();
+            Calendar calendar = Calendar.getInstance();
+            if (watering.size() > 0) {
+                Collections.sort(watering);
+                Timestamp lastWatering = watering.get(watering.size() - 1);
+                calendar.setTime(lastWatering.toDate());
+            } else if (plantedDate == null) {
+                calendar.setTime(new Date());
+            } else {
+                calendar.setTime(plantedDate);
+            }
+            int hours = calendar.get(Calendar.HOUR_OF_DAY);
+            int nextHour = nextHour(hours);
+
+            int day = calendar.get(Calendar.DAY_OF_WEEK);
+            int nextDay = nextDay(nextHour < hours ? day + 1 : day);
+
+            int millisHoursToAdd = (nextHour < hours ? ((24 - hours) + nextHour) : (nextHour - hours)) * 3600 * 1000;
+            int millisDaysToAdd = ((nextHour < hours ? -1 : 0) + (nextDay < day ? ((7 - day) + nextDay) : (nextDay - day))) * 24 * 3600 * 1000;
+
+            Date nextWateringDate = new Date(calendar.getTimeInMillis() + millisDaysToAdd + millisHoursToAdd);
+
+            return (nextWateringDate.getTime() - new Date().getTime()) / (3600 * 1000);
+        } else {
+            return null;
+        }
+    }
+
+    private int nextHour(int hour) {
+        for (int i = 0; i < 24; i++) {
+            long updatedHour = ((long) hour + i);
+            updatedHour = updatedHour > 23 ? updatedHour - 23 : updatedHour;
+            if (wateringPeriodHoursOfDay.contains(updatedHour)) {
+                return (int) updatedHour;
+            }
+        }
+        return hour;
+    }
+
+    private int nextDay(int day) {
+        for (int i = 0; i < 7; i++) {
+            long updatedDay = ((long) day + i);
+            updatedDay = updatedDay > 7 ? updatedDay - 7 : updatedDay;
+            if (wateringPeriodDaysOfWeek.contains(updatedDay)) {
+                return (int) updatedDay;
+            }
+        }
+        return day;
     }
 }

@@ -3,8 +3,11 @@ package com.android.e_garden.viewModels.listView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.SearchView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,11 +18,15 @@ import com.android.e_garden.models.Plant;
 import com.android.e_garden.viewModels.DetailsViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ListViewModel extends AppCompatActivity implements Globals.PlantObservable {
 
     private ListView listView;
     private ListViewAdapter adapter;
+
+    private String plantName;
+    private ArrayList<Plant> allPlants;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,26 +52,93 @@ public class ListViewModel extends AppCompatActivity implements Globals.PlantObs
             startActivity(intent);
         });
 
+        allPlants = Globals.getInstance().getPlants();
         Globals.getInstance().setPlantObservable(this);
-        adapter.addAll(Globals.getInstance().getPlants());
+        adapter.addAll(allPlants);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.searchmenu, menu);
+        MenuItem item = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                plantName = s;
+                filterPlants();
+                return false;
+            }
+        });
         return true;
+    }
+
+    private void filterPlants() {
+
+        ArrayList<Plant> filteredPlants = new ArrayList<>();
+
+        for (Plant plant : allPlants) {
+            if (plantName != null) {
+                if (plant.getName().toLowerCase().contains(plantName)) {
+                    filteredPlants.add(plant);
+                }
+            } else {
+                filteredPlants = allPlants;
+                break;
+            }
+        }
+
+        adapter.clear();
+        adapter.addAll(filteredPlants);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Globals.getInstance().setPlantObservable(this);
-        adapter.clear();
-        adapter.addAll(Globals.getInstance().getPlants());
+        filterPlants();
     }
 
     @Override
     public void onPlantUpdate() {
-        adapter.clear();
-        adapter.addAll(Globals.getInstance().getPlants());
+        filterPlants();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_sort) {
+            Collections.sort(allPlants, (plant, t1) -> {
+                if (plant.getName() == null && t1.getName() == null) {
+                    return 0;
+                } else if (plant.getName() == null) {
+                    return -1;
+                } else if (t1.getName() == null) {
+                    return 1;
+                }
+                return plant.getName().toLowerCase().compareTo(t1.getName().toLowerCase());
+            });
+            filterPlants();
+            return true;
+        } else if (item.getItemId() == R.id.action_sort_watering) {
+            Collections.sort(allPlants, (plant, t1) -> {
+                Long plantHours = plant.calculateRemainingHours();
+                Long t1Hours = t1.calculateRemainingHours();
+                if (plantHours == null && t1Hours == null) {
+                    return 0;
+                } else if (plantHours == null) {
+                    return 1;
+                } else if (t1Hours == null) {
+                    return -1;
+                }
+                return plantHours.compareTo(t1Hours);
+            });
+            filterPlants();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

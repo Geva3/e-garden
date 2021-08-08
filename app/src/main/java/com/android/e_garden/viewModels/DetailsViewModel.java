@@ -141,8 +141,40 @@ public class DetailsViewModel extends AppCompatActivity implements Globals.Plant
         TextView category = findViewById(R.id.tvCategory_Details);
         category.setText(plant.getCategory().toString());
 
+        //todo add watering period correcly here
+        ArrayList<String> daysOfWeek = new ArrayList<>();
+        daysOfWeek.add("Domingo");
+        daysOfWeek.add("Segunda");
+        daysOfWeek.add("Terça");
+        daysOfWeek.add("Quarta");
+        daysOfWeek.add("Quinta");
+        daysOfWeek.add("Sexta");
+        daysOfWeek.add("Sábado");
         TextView tvrega = findViewById(R.id.tvperiodoRega_Details);
-        tvrega.setText(plant.getWateringPeriod() != null ? plant.getWateringPeriod().toString() : "");
+        ArrayList<Long> wateringPeriodDaysOfWeek = plant.getWateringPeriodDaysOfWeek();
+        if (wateringPeriodDaysOfWeek.size() > 0) {
+            StringBuilder days = new StringBuilder();
+            for (Long day : wateringPeriodDaysOfWeek) {
+                days.append(daysOfWeek.get((int) (day - 1))).append(", ");
+            }
+            days.setCharAt(days.length() - 2, ' ');
+            tvrega.setText(days.toString().trim());
+        } else {
+            tvrega.setText("Nenhum dia");
+        }
+
+        TextView tvregahours = findViewById(R.id.tvperiodoRegaHoras_Details);
+        ArrayList<Long> wateringPeriodHoursOfDay = plant.getWateringPeriodHoursOfDay();
+        if (wateringPeriodHoursOfDay.size() > 0) {
+            StringBuilder hours = new StringBuilder();
+            for (Long hour : wateringPeriodHoursOfDay) {
+                hours.append(hour.toString()).append("h, ");
+            }
+            hours.setCharAt(hours.length() - 2, ' ');
+            tvregahours.setText(hours.toString().trim());
+        } else {
+            tvregahours.setText("Nenhum horário");
+        }
 
         SimpleDateFormat sdf = new SimpleDateFormat("hh'h'mm - dd/MM/yyyy", Locale.US);
 
