@@ -141,7 +141,6 @@ public class DetailsViewModel extends AppCompatActivity implements Globals.Plant
         TextView category = findViewById(R.id.tvCategory_Details);
         category.setText(plant.getCategory().toString());
 
-        //todo add watering period correcly here
         ArrayList<String> daysOfWeek = new ArrayList<>();
         daysOfWeek.add("Domingo");
         daysOfWeek.add("Segunda");
