@@ -53,7 +53,7 @@ public class ListViewModel extends AppCompatActivity implements Globals.PlantObs
         });
 
         allPlants = Globals.getInstance().getPlants();
-        Globals.getInstance().setPlantObservable(this);
+        Globals.getInstance().addPlantObservable(this);
         adapter.addAll(allPlants);
     }
 
@@ -79,6 +79,7 @@ public class ListViewModel extends AppCompatActivity implements Globals.PlantObs
 
     private void filterPlants() {
 
+        allPlants = Globals.getInstance().getPlants();
         ArrayList<Plant> filteredPlants = new ArrayList<>();
 
         for (Plant plant : allPlants) {
@@ -99,7 +100,6 @@ public class ListViewModel extends AppCompatActivity implements Globals.PlantObs
     @Override
     protected void onResume() {
         super.onResume();
-        Globals.getInstance().setPlantObservable(this);
         filterPlants();
     }
 
@@ -140,5 +140,11 @@ public class ListViewModel extends AppCompatActivity implements Globals.PlantObs
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void finish() {
+        Globals.getInstance().removePlantObservable(this);
+        super.finish();
     }
 }

@@ -2,6 +2,7 @@ package com.android.e_garden.viewModels;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -42,9 +43,14 @@ import com.android.e_garden.utils.DateInputMask;
 import com.android.e_garden.utils.ImageUtils;
 import com.android.e_garden.utils.MultiSpinner;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.text.ParseException;
@@ -286,6 +292,9 @@ public class UpdatePlantViewModel extends AppCompatActivity implements AdapterVi
 
     private void save() {
 
+        ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setMessage("Salvando planta...");
+        dialog.show();
         boolean isNewPlant = plant.getId() == null;
         AtomicBoolean finished = new AtomicBoolean(false);
 
@@ -293,22 +302,15 @@ public class UpdatePlantViewModel extends AppCompatActivity implements AdapterVi
             String photoPathStorage = plant.getUser() + "/" + UUID.randomUUID().toString();
             StorageReference ref = FirebaseStorage.getInstance().getReference().child(photoPathStorage);
             ref.putFile(photoPath)
-                    .addOnSuccessListener(taskSnapshot -> {
-                        if (finished.get()) {
-                            Toast.makeText(this, "Planta criada com sucesso", Toast.LENGTH_LONG).show();
-                            finish();
-                        } else {
-                            finished.set(true);
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        if (finished.get()) {
-                            Toast.makeText(this, "Planta criada com sucesso", Toast.LENGTH_LONG).show();
-                            finish();
-                        } else {
-                            finished.set(true);
-                        }
-                    });
+                .addOnCompleteListener(task -> {
+                    if (finished.get()) {
+                        Toast.makeText(this, "Planta salva com sucesso", Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+                        finish();
+                    } else {
+                        finished.set(true);
+                    }
+                });
 
             ArrayList<PlantPhoto> photos = new ArrayList<>();
             photos.add(new PlantPhoto(new Date(), photoPathStorage));
@@ -348,7 +350,8 @@ public class UpdatePlantViewModel extends AppCompatActivity implements AdapterVi
         }
 
         if (finished.get()) {
-            Toast.makeText(this, "Planta " + (isNewPlant ? "criada" : "atualizada") + " com sucesso", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Planta salva com sucesso", Toast.LENGTH_LONG).show();
+            dialog.dismiss();
             finish();
         } else {
             finished.set(true);

@@ -65,8 +65,12 @@ public class Globals implements EventListener<QuerySnapshot> {
         return plants.getPlants();
     }
 
-    public void setPlantObservable(PlantObservable observable) {
-        plants.setObservable(observable);
+    public void addPlantObservable(PlantObservable observable) {
+        plants.addObservable(observable);
+    }
+
+    public void removePlantObservable(PlantObservable observable) {
+        plants.removeObservable(observable);
     }
 
     @Override
@@ -107,14 +111,14 @@ public class Globals implements EventListener<QuerySnapshot> {
     private static class PlantList {
 
         private ArrayList<Plant> plants;
-        private PlantObservable observable;
+        private final ArrayList<PlantObservable> observables = new ArrayList<>();
 
         public PlantList() {
             plants = new ArrayList<>();
         }
 
         public void notifyListeners() {
-            if (observable != null) {
+            for (PlantObservable observable : observables) {
                 observable.onPlantUpdate();
             }
         }
@@ -127,8 +131,12 @@ public class Globals implements EventListener<QuerySnapshot> {
             this.plants = plants;
         }
 
-        public void setObservable(PlantObservable observable) {
-            this.observable = observable;
+        public void addObservable(PlantObservable observable) {
+            this.observables.add(observable);
+        }
+
+        public void removeObservable(PlantObservable observable) {
+            this.observables.remove(observable);
         }
     }
 

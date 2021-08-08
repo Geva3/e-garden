@@ -108,7 +108,7 @@ public class DetailsViewModel extends AppCompatActivity implements Globals.Plant
             db.collection("plant").document(plant.getId()).update("watering", plant.getWatering());
         });
 
-        Globals.getInstance().setPlantObservable(this);
+        Globals.getInstance().addPlantObservable(this);
         updatePageComponents();
     }
 
@@ -130,7 +130,7 @@ public class DetailsViewModel extends AppCompatActivity implements Globals.Plant
                 }
                 plantUri = Globals.getInstance().getPlantImage(photos.get(i).getPath());
             }
-            if (plantUri != null) {
+            if (plantUri != null && !this.isFinishing()) {
                 Glide.with(this).load(plantUri).into(images);
             }
         }
@@ -277,12 +277,17 @@ public class DetailsViewModel extends AppCompatActivity implements Globals.Plant
     @Override
     protected void onResume() {
         super.onResume();
-        Globals.getInstance().setPlantObservable(this);
         for (Plant plantItem : Globals.getInstance().getPlants()) {
             if (plantItem.getId().equals(plant.getId())) {
                 plant = plantItem;
             }
         }
         updatePageComponents();
+    }
+
+    @Override
+    public void finish() {
+        Globals.getInstance().removePlantObservable(this);
+        super.finish();
     }
 }

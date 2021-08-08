@@ -55,7 +55,7 @@ public class PhotoHistoryViewModel extends AppCompatActivity implements Globals.
             }
         }
 
-        Globals.getInstance().setPlantObservable(this);
+        Globals.getInstance().addPlantObservable(this);
         adapter = new PhotoHistoryViewAdapter(this, plant.getPhotos());
 
         fullScreenImage = findViewById(R.id.ivFullscreen);
@@ -109,5 +109,11 @@ public class PhotoHistoryViewModel extends AppCompatActivity implements Globals.
         }
         adapter.clear();
         adapter.addAll(plant.getPhotos());
+    }
+
+    @Override
+    public void finish() {
+        Globals.getInstance().removePlantObservable(this);
+        super.finish();
     }
 }
